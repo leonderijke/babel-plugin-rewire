@@ -1,6 +1,8 @@
 # babel-plugin-rewire
 
 
+**Note: This is a temporary fork until https://github.com/speedskater/babel-plugin-rewire/issues/218 is resolved.**
+
 
 A Babel plugin that adds the ability to rewire module dependencies.
 
@@ -11,9 +13,9 @@ It is inspired by [rewire.js](https://github.com/jhnns/rewire) and transfers its
 It is useful for writing tests, specifically to mock the dependencies of the module under test.
 
 Therefore for each module it adds and exports the methods `__GetDependency__`, `__Rewire__`, and `__ResetDependency__`.
-For compatibility reasons with rewire.js, the methods `__get__` and `__set__` are exported as well. 
-From version 1.0.0-rc-7 on calls to `__set__` will return a revert function like rewire.js. 
-  
+For compatibility reasons with rewire.js, the methods `__get__` and `__set__` are exported as well.
+From version 1.0.0-rc-7 on calls to `__set__` will return a revert function like rewire.js.
+
 These methods allow you to rewire the module under test.
 Furthermore in case of a default export these methods are assigned to the existing default export, except for default exports of primitive types (boolean, number, string, ...).
 
@@ -107,7 +109,7 @@ export function filterToDos( filterString ) {
 }
 
 export function filterAndSortToDos( filterString, sortOrder ) {
-   return fetchToDos( filterString ).then( function( filteredToDos ) { 
+   return fetchToDos( filterString ).then( function( filteredToDos ) {
       // Higly fashioned sort function
       return filteredAndSortedToDos;
    });
@@ -130,7 +132,7 @@ describe('api call mocking', function() {
       }).catch((e) => fail());
       ToDosRewireAPI.__ResetDependency__('fetchToDos');
    });
-   
+
    it('should use the mocked filter function', function(done) {
       ToDosRewireAPI.__Rewire__('filterToDos', function() {
          return Promise.resolve( ['02 Test more', '01 Test even more' ] );
@@ -178,7 +180,7 @@ describe('module default export test', function() {
       expect( foo() ).to.equal('my message');
       FooModule.__ResetDependency__('message');
    });
-   
+
    it('should demonstrate the rewire apis named export', function() {
       expect( foo() ).to.equal('Hello world');
       FooModuleRewireAPI.__Rewire__('message', function() {
@@ -251,7 +253,7 @@ describe('async function export test', function() {
 
 ## Resetting all
 
-When "babel-plugin-rewire" is used the global method `__rewire_reset_all__` is added. 
+When "babel-plugin-rewire" is used the global method `__rewire_reset_all__` is added.
 Each time this method is called all rewired dependencies across all modules are reset.
 
 ### Example
@@ -385,17 +387,17 @@ To integrate babel-plugin-rewire with istanbul, it is recommended to use [babel-
 This babel plugin instruments your code with Istanbul coverage.
 
 It has been reported that the order of plugins are important. Therefore prefer the following order:
- 
+
 ```json
 {
   "plugins": ["istanbul", "rewire"]
 }
 ```
 
-For a project integrating karma, babel, babel-plugin-rewire and istanbul please see [karma-rewire-istanbul-example](https://github.com/jseminck/karma-rewire-istanbul-example) 
+For a project integrating karma, babel, babel-plugin-rewire and istanbul please see [karma-rewire-istanbul-example](https://github.com/jseminck/karma-rewire-istanbul-example)
 
 
-### [isparta](https://github.com/douglasduteil/isparta) 
+### [isparta](https://github.com/douglasduteil/isparta)
 There are some things to consider when using babel-plugin-rewire together with isparta. Since isparta runs Babel itself it's important to remember to add the same configuration options to it as you would do with Babel. If you forget this you will in some cases see unexpected errors.
 
 If you use _.babelrc_ it's advised that you run your tests with a specific ENV, for example "test", and add the following to your _.babelrc_.
@@ -451,13 +453,13 @@ webpack: {
 * 0.1.12 Updated Plugin Format.
 * 0.1.13 Changed rewire specific properties on default export to non-enumerable properties.
 * 0.1.14 Added handling for non-enumerable properties to commonjs support. Support for mixed es6 and commonjs support. Handling for primitive types.
-* 0.1.15 Added functionality to rewire functions. 
+* 0.1.15 Added functionality to rewire functions.
 * 0.1.16 Fixed variable scope for rewired functions.
 * 0.1.17 Fixed variable scoping for var variable declarations.
 * 0.1.18 Fixed function scope for rewired functions.
 * 0.1.19 Removed debug statements.
 * 0.1.20 Added rewiring named exported functions and variables.
-* 0.1.21 Improved default export handling, fixed commonjs default exporting, fixed ast nodes resource leaks, improved README. 
+* 0.1.21 Improved default export handling, fixed commonjs default exporting, fixed ast nodes resource leaks, improved README.
 * 0.1.22 Added support for asynchronous functions
 * 0.1.23-beta Improved flow compatibility, Added functionality to work with cyclic dependencies.
 * 1.0.0-beta-1 Added support for babel 6, added support for rewiring classes, added support for flow types, added support for rewire.js compatible \__with\__
@@ -472,8 +474,8 @@ webpack: {
 * 1.0.0-rc-5 Improved support for rewiring JSX-Components. Further improved for working in combination with other plugins.
 * 1.0.0-rc-6 Fixed regression which can occur with variable declarators and function expressions. Fixed handling of default exports containing nested functions.
 * 1.0.0-rc-7 Added revert function as a return of \__set\__ calls.
-* 1.0.0 Fixed regression with object methods and improved istanbul documentation. 
-* 1.2.0-rc.1 Add support for babel 7, object spread and revert function from \_\_set\_\_ with object and fixes undefined variable error  
+* 1.0.0 Fixed regression with object methods and improved istanbul documentation.
+* 1.2.0-rc.1 Add support for babel 7, object spread and revert function from \_\_set\_\_ with object and fixes undefined variable error
 
 ## Contributors
 
@@ -481,7 +483,7 @@ webpack: {
 * [Peet](https://github.com/peet) - module.exports and top-level var support
 * [TheSavior](https://github.com/TheSavior) - support for non-enumerable rewire properties, support for ignored identifiers
 * [Rene Saarsoo](https://github.com/nene) - support for using objects as parameter to \_\_set\_\_
-* [PSpSynedra](https://github.com/PSpSynedra) - support for named export and function rewiring and improvements of default imports 
+* [PSpSynedra](https://github.com/PSpSynedra) - support for named export and function rewiring and improvements of default imports
 * [Gustaf Dalemar](https://github.com/DLMR) - support for asynchronous functions
 * [Spencre Leichty](https://github.com/spncrlkt) - support for named wildcard exports
 * [Zhanzhan He](https://github.com/zh3) - support for wildcard imports
@@ -492,7 +494,7 @@ webpack: {
 * [Thomas Levy](https://github.com/NilSet) - added support for babel 7
 * [Malthe Jørgensen](https://github.com/malthejorgensen) - added support for object spread
 * [Tim Whitbeck](https://github.com/twhitbeck) - added revert function from  \_\_set\_\_ with object
-* [Dennis E](https://github.com/destenson) - fixed undefined \_\_$$GLOBAL_REWIRE_REGISTRY\_\_ error  
+* [Dennis E](https://github.com/destenson) - fixed undefined \_\_$$GLOBAL_REWIRE_REGISTRY\_\_ error
 
 ## License
 

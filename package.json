@@ -1,12 +1,13 @@
 {
   "name": "babel-plugin-rewire",
-  "version": "1.2.0",
+  "version": "1.3.0-pre",
   "description": "A babel plugin adding the ability to rewire module dependencies. This enables to mock modules for testing purposes.",
   "main": "lib/babel-plugin-rewire.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha && ./node_modules/.bin/mocha usage-tests",
     "build": "./node_modules/.bin/babel src --out-dir lib",
-    "prepublish": "./node_modules/.bin/babel src --out-dir lib"
+    "prepublish": "./node_modules/.bin/babel src --out-dir lib",
+    "postinstall": "yarn build"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org/"
